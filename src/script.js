@@ -77,13 +77,14 @@ const tubeGeometry = new THREE.TubeGeometry( path, 200, 1, 64, false );
 const material = new THREE.MeshBasicMaterial( {
   side: THREE.DoubleSide,
   map: texture,
+  
  } );
 material.map.wrapS = THREE.RepeatWrapping;
 material.map.wrapT = THREE.RepeatWrapping;
 material.map.repeat.set(10, 1)
 
 const mesh = new THREE.Mesh( tubeGeometry, material );
-// mesh.rotation.z = Math.PI / 2
+//mesh.rotation.z = Math.PI / 2
 scene.add( mesh );
 
 /**
@@ -91,7 +92,7 @@ scene.add( mesh );
  */
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
-    antialias: true,
+    //antialias: true,
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
@@ -102,6 +103,7 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
 let normal = new THREE.Vector3()
 let binormal = new THREE.Vector3()
+let lookAt = new THREE.Vector3(15)
 
 const tick = () =>
 {
@@ -129,17 +131,18 @@ const tick = () =>
 
 	pos.add( normal.clone().multiplyScalar( offset ) );
 
-	camera.position.copy( pos );
+	camera.position.copy( pos, pos );
+  
 
 				// using arclength for stablization in look ahead
 
-	let lookAt = tubeGeometry.parameters.path.getPointAt( ( t + 30 / tubeGeometry.parameters.path.getLength() ));
+	tubeGeometry.parameters.path.getPointAt( ( t + 30 / tubeGeometry.parameters.path.getLength()));
 
   camera.matrix.lookAt( camera.position, lookAt, normal );
   camera.rotation.setFromRotationMatrix( camera.matrix, camera.rotation.order );
-  
+  console.log(binormal)
 
-  controls.update()
+  // controls.update()
 
   // Render
   renderer.render(scene, camera)
