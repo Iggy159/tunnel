@@ -10,7 +10,7 @@ import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing
  */
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
-const texture = new THREE.TextureLoader().load( 'https://images.unsplash.com/photo-1546453667-8a8d2d07bc20?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80' );
+const texture = new THREE.TextureLoader().load( 'https://images.unsplash.com/photo-1511877448058-cbf344a6a85a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80' );
 
 
 // Scene
@@ -65,7 +65,7 @@ class CustomSinCurve extends THREE.Curve {
 
 		const tx = Math.cos( 2 * Math.PI * t );
 		const ty = Math.sin( 2 * Math.PI * t );
-		const tz = 0.08 * Math.sin( 8 * Math.PI * t );
+		const tz = 0.1 * Math.sin( 10 * Math.PI * t );
 
 
 		return optionalTarget.set( tx, ty, tz ).multiplyScalar( this.scale );
@@ -75,14 +75,15 @@ class CustomSinCurve extends THREE.Curve {
 }
 
 const path = new CustomSinCurve( 30 );
-const tubeGeometry = new THREE.TubeGeometry( path, 100, 2, 20, false );
+const tubeGeometry = new THREE.TubeGeometry( path, 100, 0.3, 20, false );
 
 
-const material = new THREE.MeshBasicMaterial( {
+const material = new THREE.MeshBasicMaterial({
+
   side: THREE.DoubleSide,
   map: texture,
-  color: 0xffffff
-  
+  color: 0x543312
+
  } );
 material.map.wrapS = THREE.RepeatWrapping;
 material.map.wrapT = THREE.RepeatWrapping;
@@ -93,6 +94,11 @@ const mesh = new THREE.Mesh( tubeGeometry, material );
 
 scene.add( mesh );
 
+
+//light
+let light = new THREE.PointLight(0xffffff, 3)
+light.position.set(0,300,500)
+scene.add(light)
 /**
  * Renderer
  */
@@ -111,15 +117,15 @@ const bloomPass = new UnrealBloomPass(
 	1.4,
 	1.85
   );
-  bloomPass.exposure = 2.0
-  bloomPass.threshold = 0.2;
-  bloomPass.strength = 4.5; //intensity of glow
-  bloomPass.radius = 4;
-  
+  bloomPass.exposure = 0.3
+  bloomPass.threshold = 0.0;
+  bloomPass.strength = 0.1; //intensity of glow
+  bloomPass.radius = 0.2;
+
   const composer = new EffectComposer(renderer);
-  composer.setSize(window.innerWidth, window.innerHeight); 
-  composer.renderToScreen = true; 
-  composer.addPass(renderScene); 
+  composer.setSize(window.innerWidth, window.innerHeight);
+  composer.renderToScreen = true;
+  composer.addPass(renderScene);
   composer.addPass(bloomPass)
 
 
@@ -135,7 +141,7 @@ const params = {
 	spline: 'GrannyKnot',
 	scale: 8,
 	extrusionSegments: 100,
-	radiusSegments: 3,
+	radiusSegments: 1,
 	closed: true,
 	animationView: true,
 	lookAhead: false,
@@ -168,7 +174,7 @@ const tick = () =>
 	pos.add( normal.clone().multiplyScalar( offset ) );
 
 	camera.position.copy( pos, pos );
-  
+
 
 				// using arclength for stablization in look ahead
 
@@ -178,13 +184,12 @@ const tick = () =>
   	camera.rotation.setFromRotationMatrix( camera.matrix, camera.rotation.order );
 
   	// controls.update()
-  	//camera.rotation.y = Math.PI 	
+  	//camera.rotation.y = Math.PI
   // Render
   	renderer.render(scene, camera)
-  
+
   // Call tick again on the next frame
   	window.requestAnimationFrame(tick)
 }
 
 tick()
-
