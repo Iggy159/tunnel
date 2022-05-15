@@ -24,7 +24,7 @@ float fbn(vec4 p) {
 void main() {
   vec4 p = vec4(vPosition * 3.0, uTime * 0.09);
   float noise = fbn(p);
-  vec4 p1 = vec4(vPosition * 1.0, uTime * 0.1);
+  vec4 p1 = vec4(vPosition * 2.0, uTime * 0.1);
   float spots = max(cnoise4(p1), 0.0);
   gl_FragColor = vec4(noise);
   gl_FragColor *= spots;
