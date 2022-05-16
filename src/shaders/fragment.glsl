@@ -22,11 +22,12 @@ float fbn(vec4 p) {
 }
 
 void main() {
-  vec4 p = vec4(vPosition * 3.0, uTime * 0.09);
+  vec4 p = vec4(vPosition * 3.0, uTime * 0.05);
   float noise = fbn(p);
-  vec4 p1 = vec4(vPosition * 2.0, uTime * 0.1);
+  vec4 p1 = vec4(vPosition * 2.0, uTime * 0.05);
   float spots = max(cnoise4(p1), 0.0);
-  gl_FragColor = vec4(noise);
-  gl_FragColor *= spots;
+  gl_FragColor = vec4(noise, noise, noise, 1.0);
+  gl_FragColor *= mix(1.0, spots, 0.8);
+
   //gl_FragColor *= min(1.0, spots, 0.7);
 }

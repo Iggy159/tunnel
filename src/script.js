@@ -113,7 +113,7 @@ const glitchPass = new GlitchPass();
 composer.addPass( new RenderPass( scene, camera ) );
 
 // composer.addPass(glitchPass);
-composer.addPass(bloomPass)
+//composer.addPass(bloomPass)
 
 /**
  * Animate
