@@ -1,6 +1,7 @@
 #pragma glslify: cnoise3 = require('glsl-noise/simplex/3d')
 #pragma glslify: cnoise4 = require('glsl-noise/simplex/4d')
 
+
 varying vec3 vNormal;
 varying float vPerlin;
 varying vec3 vPosition;
@@ -28,6 +29,8 @@ void main() {
   float spots = max(cnoise4(p1), 0.0);
   gl_FragColor = vec4(noise, noise, noise, 1.0);
   gl_FragColor *= mix(1.0, spots, 0.8);
-
-  //gl_FragColor *= min(1.0, spots, 0.7);
 }
+
+// void main() {
+//   gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+// }

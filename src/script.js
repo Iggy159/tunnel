@@ -59,14 +59,14 @@ controls.enableDamping = true
 //Terrain
 const land = {}
 
-land.geometry = new THREE.SphereBufferGeometry(1, 258, 258)
+land.geometry = new THREE.BoxGeometry(1, 1, 1)
 land.geometry.rotateX(- Math.PI * 0.5)
 
 land.material = new THREE.ShaderMaterial({
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
     // wireframe: true,
-    // wireframeLinewidth: 0.3,
+    // wireframeLinewidth: 32.3,
     fog: true,
     uniforms: {
         uTime: { value: 0 }
@@ -99,7 +99,7 @@ const bloomPass = new UnrealBloomPass(
 );
 bloomPass.exposure = 1.0
 bloomPass.threshold = 0.2;
-bloomPass.strength = 0.2; //intensity of glow
+bloomPass.strength = 0.3; //intensity of glow
 bloomPass.radius = 1.5;
 
 const composer = new EffectComposer(renderer);
@@ -113,7 +113,7 @@ const glitchPass = new GlitchPass();
 composer.addPass( new RenderPass( scene, camera ) );
 
 // composer.addPass(glitchPass);
-//composer.addPass(bloomPass)
+composer.addPass(bloomPass)
 
 /**
  * Animate
